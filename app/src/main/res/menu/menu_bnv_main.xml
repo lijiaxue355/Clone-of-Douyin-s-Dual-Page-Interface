@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+      <item
+          android:id = "@+id/tv_firpage_menu"
+          android:title="首页"
+
+          >
+
+      </item>
+    <item
+        android:id = "@+id/tv_friends_menu"
+        android:title="朋友"
+
+        >
+
+    </item>
+    <item
+        android:id = "@+id/tv_none_menu"
+        android:enabled="false"
+        android:title=""
+      >
+
+    </item>
+    <item
+        android:id = "@+id/tv_message_menu"
+        android:title="消息"
+
+       >
+
+    </item>
+    <item
+        android:id = "@+id/tv_mine_menu"
+        android:title="我"
+
+        >
+
+    </item>
+</menu>

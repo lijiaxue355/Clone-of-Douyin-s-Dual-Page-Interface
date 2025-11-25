@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+
+    tools:context=".MainActivity">
+    <data
+        >
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EFEFF0">
+        <FrameLayout
+            android:id= "@+id/frame_ma"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bnv_mainactivity">
+
+        </FrameLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id = "@+id/bnv_mainactivity"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:menu="@menu/menu_bnv_main"
+            app:itemRippleColor="@null"
+            app:labelVisibilityMode="labeled"
+            app:itemIconSize="0dp"
+            app:itemIconTint="@android:color/transparent"
+            app:itemGravity="center"
+            app:itemActiveIndicatorStyle="@null"
+            app:itemTextAppearanceInactive="@style/bgv_checked"
+            app:itemTextAppearanceActive="@style/bgv_unchecked"
+            app:itemTextColor="@color/bgvitem_tvcolor_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#FFFFFF"
+            app:itemPaddingTop="0dp"
+            app:itemPaddingBottom="0dp"
+            >
+
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="45dp"
+            android:scaleType="fitXY"
+            android:src = "@drawable/takephoto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:elevation="5dp"
+            app:layout_constraintTop_toTopOf="@+id/bnv_mainactivity"
+            >
+
+        </ImageView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
