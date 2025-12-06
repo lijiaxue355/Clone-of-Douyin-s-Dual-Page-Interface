@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data
+        >
+        <variable
+            name="viewmodel"
+            type="com.example.douyin.viewmodel.HomeViewModel" />
+        <variable
+            name="video"
+            type="com.example.douyin.data.model.Video" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <androidx.media3.ui.PlayerView
+            android:id ="@+id/playerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:background="@color/black"
+            app:use_controller="false"
+            >
+
+        </androidx.media3.ui.PlayerView>
+        <ImageView
+            android:id = "@+id/iv_pause"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src = "@drawable/stop"
+            android:visibility="gone"
+           >
+
+
+        </ImageView>
+        <ImageView
+            android:id = "@+id/iv_doublelike"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src = "@drawable/pinklike"
+            android:visibility="gone"
+
+        >
+
+
+        </ImageView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id = "@+id/cons_zpz_inter"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/cons_bottom_player"
+                >
+                <androidx.cardview.widget.CardView
+                    android:id = "@+id/cv_anthorimg_inter"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_like_inter"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    android:layout_marginBottom="20dp">
+                    <ImageView
+                        android:id = "@+id/iv_anthorimg_inter"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:imageResource = "@{video.anthorImgUrl}"
+
+                        android:scaleType="fitXY">
+
+                    </ImageView>
+                </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id = "@+id/iv_like_inter"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_anthorimg_inter"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_likecontent_inter"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@{video.isLike ? @drawable/pinklike : @drawable/unlike}"
+                    android:scaleType="fitXY">
+
+                </ImageView>
+                <TextView
+                    android:id = "@+id/tv_likecontent_inter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_like_inter"
+                    android:layout_marginBottom="15dp"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_pinglun_inter"
+                    android:text="@{video.like}"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    >
+
+                </TextView>
+                <ImageView
+
+                    android:layout_marginBottom="5dp"
+                    android:id = "@+id/iv_pinglun_inter"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_likecontent_inter"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_pinglun_inter"
+                    android:src="@drawable/pinglun1"
+                    android:scaleType="fitXY">
+
+                </ImageView>
+                <TextView
+                    android:id = "@+id/tv_pinglun_inter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_pinglun_inter"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_star_inter"
+                    android:layout_marginBottom="15dp"
+                    android:text="@{video.comment}"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    >
+
+                </TextView>
+                <ImageView
+                    android:id = "@+id/iv_star_inter"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pinglun_inter"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_star_inter"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@{video.isStar ? @drawable/yishoucang : @drawable/shoucang3 }"
+                    android:scaleType="fitXY"
+
+                    >
+
+                </ImageView>
+                <TextView
+                    android:id = "@+id/tv_star_inter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_star_inter"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_toOther_inter"
+                    android:layout_marginBottom="15dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:text="@{video.stars}"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+
+                    >
+
+                </TextView>
+
+                <ImageView
+                    android:id = "@+id/iv_toOther_inter"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_star_inter"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_toOther_inter"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/zhuanfa"
+                    android:scaleType="fitXY"
+
+                    >
+
+                </ImageView>
+                <TextView
+                    android:id = "@+id/tv_toOther_inter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_toOther_inter"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_music_inter"
+                    android:layout_marginBottom="15dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:text="@{video.toOthor}"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+
+                    >
+
+                </TextView>
+                <ImageView
+                    android:id = "@+id/iv_music_inter"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_toOther_inter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/zp"
+                    android:scaleType="fitXY"
+
+                    >
+
+                </ImageView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="80dp"
+                app:layout_constraintBottom_toTopOf="@+id/sb_seekbar_inter">
+                <TextView
+                    android:id = "@+id/tv_anthorname_inter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_anthorcontent_inter"
+                    android:text="@{video.anthorName}"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+
+                    >
+
+                </TextView>
+                <TextView
+                    android:id = "@+id/tv_anthorcontent_inter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_anthorname_inter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:text="@{video.videoContent}"
+                    android:textSize="14dp"
+                    android:maxLines="2"
+                    android:textColor="#ffffff"
+
+                    >
+
+                </TextView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <SeekBar
+                android:id = "@+id/sb_seekbar_inter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintTop_toBottomOf="@+id/cons_zpz_inter"
+                app:layout_constraintBottom_toTopOf="@+id/cons_bottom_player">
+
+            </SeekBar>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="#000000"
+                android:id = "@+id/cons_bottom_player"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

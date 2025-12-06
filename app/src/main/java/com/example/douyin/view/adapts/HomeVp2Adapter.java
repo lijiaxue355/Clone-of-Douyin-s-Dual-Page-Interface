@@ -1,14 +1,15 @@
-package com.example.douyin.home.adapts;
+package com.example.douyin.view.adapts;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class HomeVp2Adapter extends FragmentStateAdapter {
-    private List<Fragment> list;
+    private List<Fragment> list = new LinkedList<>();
 
     public HomeVp2Adapter(@NonNull FragmentActivity fragmentActivity,List<Fragment> list) {
         super(fragmentActivity);
@@ -23,6 +24,6 @@ public class HomeVp2Adapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list==null ? 0:list.size();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.douyin.home;
+package com.example.douyin.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,10 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.example.douyin.MainActivity;
 import com.example.douyin.R;
 import com.example.douyin.databinding.FirspageFragmentBinding;
-import com.example.douyin.home.adapts.HomeVp2Adapter;
+import com.example.douyin.view.adapts.HomeVp2Adapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

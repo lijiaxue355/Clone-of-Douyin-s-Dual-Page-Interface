@@ -6,7 +6,13 @@
         >
         <variable
             name="item"
-            type="com.example.douyin.home.Item" />
+            type="com.example.douyin.data.model.Video" />
+        <variable
+            name="position"
+            type="int" />
+        <variable
+            name="recyfragment"
+            type="com.example.douyin.view.fragment.RecyFragment" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,6 +20,9 @@
         app:layout_constraintTop_toTopOf="parent"
        >
         <androidx.cardview.widget.CardView
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{(view)->recyfragment.setHomeToInterFragment(position)}"
             android:layout_marginTop="4dp"
             android:layout_marginRight="2dp"
             android:layout_marginLeft="2dp"
@@ -32,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:imageResource = "@{item.img}"
+                    app:imageResource = "@{item.videoFirstImgUrl}"
                     android:scaleType="fitXY">
 
                 </ImageView>
@@ -42,7 +51,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/iv_itesrecy_fpf"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:text = "@{item.content}"
+                    android:text = "@{item.videoContent}"
                     android:textColor="@color/black"
                     android:layout_margin="10dp">
 
@@ -63,7 +72,7 @@
                         android:id = "@+id/iv_titlerecy_fpf"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        app:imageResource = "@{item.titleimg}"
+                        app:imageResource = "@{item.anthorImgUrl}"
                         android:scaleType="fitXY">
 
                     </ImageView>
@@ -74,7 +83,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/tv_contentrecy_fpf"
                     app:layout_constraintLeft_toRightOf="@+id/cv_titlerecy_fpf"
-                    android:text = "@{item.name}"
+                    android:text = "@{item.anthorName}"
                     android:textSize="12sp"
                     android:textColor="@color/uncheckedbgv"
                     android:layout_margin="10dp">
@@ -86,8 +95,7 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="3dp"
-
-                    android:src = "@drawable/uncheckedlike"
+                    android:src = "@{item.isLike ? @drawable/checkedlike : @drawable/uncheckedlike}"
                     android:scaleType="fitXY"
                     app:layout_constraintTop_toBottomOf="@id/tv_contentrecy_fpf"
                     app:layout_constraintRight_toLeftOf="@+id/tv_likerecy_fpf"
