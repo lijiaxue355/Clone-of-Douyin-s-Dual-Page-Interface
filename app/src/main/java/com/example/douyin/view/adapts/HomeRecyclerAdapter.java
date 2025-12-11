@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.douyin.R;
@@ -23,6 +24,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     RecyFragment fragment;
     RecyclerView recyclerView;
     public HomeRecyclerAdapter() {
+        setHasStableIds(true);
     }
 
     public void  setLists(List<Video> list, RecyFragment fragment,RecyclerView rv) {
@@ -41,6 +43,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+
        holder.binding.setItem(list.get(position));
        holder.binding.setPosition(position);
        holder.binding.setRecyfragment(fragment);
@@ -50,6 +54,20 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     @Override
     public int getItemCount() {
         return list==null?0: list.size();
+    }
+    @Override
+    public long getItemId(int position) {
+        if(list==null || position<0 || position>=list.size()){
+            return RecyclerView.NO_ID;
+        }
+        return list.get(position).getId();
+    }
+    public void  updataAdapter(List<Video> list){
+
+        SUpdataVideoDiffCallBack diffCallBack = new SUpdataVideoDiffCallBack(this.list,list);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallBack);
+        this.list = list;
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{

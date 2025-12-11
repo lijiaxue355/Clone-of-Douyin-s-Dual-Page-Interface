@@ -5,68 +5,71 @@
 
 
     tools:context=".MainActivity">
-    <data
-        >
-         <variable
-             name="viewmodel"
-             type="com.example.douyin.viewmodel.HomeViewModel" />
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.douyin.viewmodel.HomeViewModel" />
     </data>
+
     <FrameLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/main">
+        android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#EFEFF0"
-            >
+            android:background="#EFEFF0">
+
             <FrameLayout
-                android:id= "@+id/frame_ma"
+                android:id="@+id/frame_ma"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/bnv_mainactivity"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/bnv_mainactivity">
+                app:layout_constraintTop_toTopOf="parent">
 
             </FrameLayout>
+
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id = "@+id/bnv_mainactivity"
+                android:id="@+id/bnv_mainactivity"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                app:menu="@menu/menu_bnv_main"
-                app:itemRippleColor="@null"
-                app:labelVisibilityMode="labeled"
+                android:background="#FFFFFF"
+                app:itemActiveIndicatorStyle="@null"
+                app:itemGravity="center"
                 app:itemIconSize="0dp"
                 app:itemIconTint="@android:color/transparent"
-                app:itemGravity="center"
-                app:itemActiveIndicatorStyle="@null"
-                app:itemTextAppearanceInactive="@style/bgv_checked"
-                app:itemTextAppearanceActive="@style/bgv_unchecked"
-                app:itemTextColor="@color/bgvitem_tvcolor_selector"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="#FFFFFF"
-                app:itemPaddingTop="0dp"
                 app:itemPaddingBottom="0dp"
+                app:itemPaddingTop="0dp"
+                app:itemRippleColor="@null"
+                app:itemTextAppearanceActive="@style/bgv_unchecked"
+                app:itemTextAppearanceInactive="@style/bgv_checked"
+                app:itemTextColor="@color/bgvitem_tvcolor_selector"
+                app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:menu="@menu/menu_bnv_main"
 
                 >
 
             </com.google.android.material.bottomnavigation.BottomNavigationView>
+
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="45dp"
+                android:elevation="5dp"
                 android:scaleType="fitXY"
-                android:src = "@drawable/takephoto"
+                android:src="@drawable/takephoto"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:elevation="5dp"
-                app:layout_constraintTop_toTopOf="@+id/bnv_mainactivity"
-                >
+                app:layout_constraintTop_toTopOf="@+id/bnv_mainactivity">
 
             </ImageView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
-
 
 
 </layout>

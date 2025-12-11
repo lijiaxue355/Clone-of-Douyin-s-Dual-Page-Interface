@@ -33,10 +33,12 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         fragmentList = new LinkedList<>();
-        for (int i = 0; i < 10; i++) {
-            RecyFragment fragment = new RecyFragment();
-            fragmentList.add(fragment);
+        for (int i = 0; i < 8; i++) {
+            OtherRecyFragment otherRecyFragment = new OtherRecyFragment();
+            fragmentList.add(otherRecyFragment);
         }
+        RecyFragment fragment = new RecyFragment();
+        fragmentList.add(fragment);
         HomeVp2Adapter adapter = new HomeVp2Adapter(getActivity(),fragmentList);
         binding.vp2Fpf.setAdapter(adapter);
 
@@ -74,7 +76,7 @@ public class HomeFragment extends Fragment {
                }
             }
         }).attach();
-
+        binding.vp2Fpf.setCurrentItem(adapter.getItemCount() - 1,false);
         super.onViewCreated(view, savedInstanceState);
     }
 

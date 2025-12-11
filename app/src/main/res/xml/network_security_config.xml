@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <network-security-config>
-        <domain-config cleartextTrafficPermitted="true">
-            <domain includeSubdomains="true">pic.yupoo.com</domain>
-            <domain includeSubdomains="true">yupoo.com</domain>
-        </domain-config>
-    </network-security-config>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">qiniudn.com</domain>
+    </domain-config>
+</network-security-config>

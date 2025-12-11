@@ -45,61 +45,7 @@
                 app:tabTextAppearance="@style/tab_text"
                 app:tabPaddingBottom="5dp"
                 >
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="经验"
-                    >
 
-                </com.google.android.material.tabs.TabItem>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="热点">
-
-                </com.google.android.material.tabs.TabItem>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="直播">
-
-                </com.google.android.material.tabs.TabItem>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="团购">
-
-                </com.google.android.material.tabs.TabItem>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="西安">
-
-                </com.google.android.material.tabs.TabItem>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="精选">
-
-                </com.google.android.material.tabs.TabItem>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="关注">
-
-                </com.google.android.material.tabs.TabItem>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="商城">
-
-                </com.google.android.material.tabs.TabItem>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="推荐">
-
-                </com.google.android.material.tabs.TabItem>
             </com.google.android.material.tabs.TabLayout>
             <ImageView
                 android:id = "@+id/iv_topright_fpf"

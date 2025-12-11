@@ -6,4 +6,6 @@ import retrofit2.http.GET;
 public interface IApiInterface {
     @GET("xx/ceshi")
     Call<ApiResponse> getList();
+    @GET("xx/refush")
+    Call<ApiResponse> getRefushList();
 }

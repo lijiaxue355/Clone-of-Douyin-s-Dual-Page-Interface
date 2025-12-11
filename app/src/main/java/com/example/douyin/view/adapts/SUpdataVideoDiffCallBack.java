@@ -4,10 +4,12 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.example.douyin.data.model.Video;
 
+import java.util.Objects;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SUpdataVideoDiffCallBack extends DiffUtil.Callback {
-    private  List<Video> oldList;
+    private  List<Video> oldList = new LinkedList<>();
     private  List<Video> newList;
 
     public SUpdataVideoDiffCallBack(List<Video> newList, List<Video> oldList) {
@@ -52,9 +54,9 @@ public class SUpdataVideoDiffCallBack extends DiffUtil.Callback {
         Video video = oldList.get(oldItemPosition);
         Video newVideo = newList.get(newItemPosition);
 
-        return (video.isLike() == newVideo.isLike() && video.getLike().equals(newVideo.getLike()))&&
-                (video.getComment().equals(newVideo.getComment())) &&
-                ( video.isStar() == newVideo.isStar() && video.getStars().equals(newVideo.getStars()))&&
-                (video.getToOthor().equals(newVideo.getToOthor()));
+        return (video.isLike() == newVideo.isLike() && Objects.equals(video.getLike(), newVideo.getLike()))&&
+                (Objects.equals(video.getComment(), newVideo.getComment())) &&
+                ( video.isStar() == newVideo.isStar() && Objects.equals(video.getStars(), newVideo.getStars()))&&
+                (Objects.equals(video.getToOthor(), newVideo.getToOthor()));
     }
 }

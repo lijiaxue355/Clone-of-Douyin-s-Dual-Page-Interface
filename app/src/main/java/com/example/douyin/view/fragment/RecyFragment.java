@@ -15,7 +15,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.douyin.MainActivity;
 import com.example.douyin.R;
@@ -28,29 +31,45 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class RecyFragment extends Fragment {
-     FirspageShowVp2Binding binding;
+    FirspageShowVp2Binding binding;
     HomeViewModel homeViewModel;
     HomeRecyclerAdapter adapter;
     InterFragment interFragment;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.firspage_show_vp2,container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.firspage_show_vp2, container, false);
         homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         binding.setLifecycleOwner(this);
-        adapter = new HomeRecyclerAdapter();
+        binding.setViewmodel(homeViewModel);
+        homeViewModel.getIfProgress().setValue(true);
         homeViewModel.firstVideoList();
+        adapter = new HomeRecyclerAdapter();
         homeViewModel.getMutVideoList().observe(getViewLifecycleOwner(), new Observer<List<Video>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<Video> videos) {
-                adapter.setLists(videos, RecyFragment.this,binding.recyShowFirstpage);
-                adapter.notifyDataSetChanged();
+                if (videos != null && !videos.isEmpty()) {
+                    binding.refresh.setRefreshing(false);
+                    Log.d("lyhlyhlyh",videos.get(0).isLike() + " ");
+                    adapter.updataAdapter(videos);
+                    adapter.setLists(videos, RecyFragment.this, binding.recyShowFirstpage);
+
+                    homeViewModel.getIfProgress().setValue(false);
+                }
+            }
+        });
+        binding.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                homeViewModel.refreshVideoList();
             }
         });
         return binding.getRoot();
 
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -60,35 +79,41 @@ public class RecyFragment extends Fragment {
 //            list.add(new Item("好看的帽子",R.drawable.newmaozi,"10万","爱帽者",R.drawable.title4));
 //        }
 
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-//        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+//        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         binding.recyShowFirstpage.setLayoutManager(layoutManager);
         binding.recyShowFirstpage.setAdapter(adapter);
+        binding.recyShowFirstpage.setItemAnimator(null);
 
 
     }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-    public void setHomeToInterFragment(int position){
-        Log.d("ljxxhgswy","yes");
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
-        if(homeViewModel==null){
+    public void setHomeToInterFragment(View view, int position) {
+        if (homeViewModel == null) {
             homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         }
         homeViewModel.getMutPosition().setValue(position);
 
-            interFragment = new InterFragment();
+        if (view.getTransitionName().equals("video_transition")) {
+            view.setTransitionName(view.getTransitionName() + position);
+        }
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main,interFragment).addToBackStack(null).commit();
+        interFragment = new InterFragment();
+        Bundle args = new Bundle();
+        args.putString("name", view.getTransitionName());
+        interFragment.setArguments(args);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .addSharedElement(view, view.getTransitionName())
+                //重新排序，优化操作；
+                .setReorderingAllowed(true)
+                .replace(R.id.main, interFragment).addToBackStack(null).commit();
     }
 }

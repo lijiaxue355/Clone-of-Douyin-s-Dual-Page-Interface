@@ -11,9 +11,10 @@ import java.util.List;
 public class HomeVp2Adapter extends FragmentStateAdapter {
     private List<Fragment> list = new LinkedList<>();
 
-    public HomeVp2Adapter(@NonNull FragmentActivity fragmentActivity,List<Fragment> list) {
+    public HomeVp2Adapter(@NonNull FragmentActivity fragmentActivity, List<Fragment> list) {
         super(fragmentActivity);
         this.list = list;
+
     }
 
     @NonNull
@@ -24,6 +25,6 @@ public class HomeVp2Adapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return list==null ? 0:list.size();
+        return list == null ? 0 : list.size();
     }
 }

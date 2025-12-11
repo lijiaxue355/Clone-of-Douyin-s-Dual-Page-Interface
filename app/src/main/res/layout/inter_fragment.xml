@@ -22,6 +22,21 @@
             android:visibility="gone">
 
         </ProgressBar>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id = "@+id/interrefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.viewpager2.widget.ViewPager2
+
+            android:id = "@+id/inter_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+        </androidx.viewpager2.widget.ViewPager2>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id = "@+id/cons_top_inter"
             android:layout_width="match_parent"
@@ -29,6 +44,7 @@
             app:layout_constraintTop_toTopOf="parent"
             >
             <ImageButton
+                android:id = "@+id/ib_back"
                 android:background="@android:color/transparent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -53,13 +69,5 @@
 
             </ImageButton>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.viewpager2.widget.ViewPager2
-
-            android:id = "@+id/inter_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        </androidx.viewpager2.widget.ViewPager2>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
