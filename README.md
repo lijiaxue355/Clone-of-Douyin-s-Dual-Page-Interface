@@ -35,5 +35,5 @@ com.example.douyin
 
 ## 3. 视频展示
 
-[展示视频]([百度网盘 - 视频播放](https://pan.baidu.com/pfile/video?path=%2F网络视频%2Fdouyinfangxie1.mp4&theme=light&view_from=personal_file&from=home))
+[百度网盘 - 视频播放](https://pan.baidu.com/pfile/video?path=%2F网络视频%2Fdouyinfangxie1.mp4&theme=light&view_from=personal_file&from=home)
 
