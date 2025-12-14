@@ -5,18 +5,20 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static final String URL= "https://m1.apifoxmock.com/m1/7473578-7208266-default/";
+    //实例化retrofit对象，提供接口对象给repository实现数据来源的管理
+    private static final String URL = "https://m1.apifoxmock.com/m1/7473578-7208266-default/";
 
     private static Retrofit retrofit;
     private static IApiInterface apiService;
-    public static IApiInterface getApiServiceAll (){
-        if(retrofit == null){
-            retrofit =  new Retrofit.Builder()
+
+    public static IApiInterface getApiServiceAll() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
                     .baseUrl(URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        if(apiService == null){
+        if (apiService == null) {
             apiService = retrofit.create(IApiInterface.class);
         }
         return apiService;

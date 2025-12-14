@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -47,6 +48,7 @@ import androidx.media3.datasource.cache.CacheDataSource;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory;
 import androidx.media3.ui.PlayerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.douyin.R;
 import com.example.douyin.Utils;
@@ -63,6 +65,10 @@ import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+// 说明：内流单视频页面
+// - 创建并绑定 ExoPlayer，预加载下一条
+// - 管理评论底部弹层与输入交互
+// - 点赞/收藏事件上报到 ViewModel，最小刷新 UI
 public class InterVp2Fragment extends Fragment {
     InterVp2FragmentBinding binding;
     private ExoPlayer player;
@@ -94,6 +100,7 @@ public class InterVp2Fragment extends Fragment {
         if (viewModel.getMutVideoList().getValue() != null) {
             video = viewModel.getMutVideoList().getValue().get(position);
             binding.setVideo(video);
+
         }
         return binding.getRoot();
     }
@@ -102,6 +109,7 @@ public class InterVp2Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        // 初始化播放器与媒体源（附加缓存数据源），并预加载下一条视频
         if (player == null) {
             DefaultHttpDataSource.Factory httpFactory = new DefaultHttpDataSource.Factory()
                     .setAllowCrossProtocolRedirects(true);
@@ -141,40 +149,38 @@ public class InterVp2Fragment extends Fragment {
         }
         setGesture();
 
+        // 评论面板配置：高度/状态/拖拽/顶部偏移
         behavior = BottomSheetBehavior.from(binding.consComment);
-        //设置hidden时高度
         behavior.setPeekHeight(0);
-        //设置状态
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        //设置可以隐藏状态
         behavior.setHideable(true);
-        //设置当影响变为全屏或者全屏的时候，直接，不用有一部分弹的提示
         behavior.setSkipCollapsed(true);
-        //用户可以手拖动
         behavior.setDraggable(true);
-        //很重要，不根据内容来尽可能的靠近屏幕顶部
+        //不根据内容来尽可能的靠近屏幕顶部
         behavior.setFitToContents(false);
         //这个是设置评论区最顶部到屏幕最顶部的距离
         int expandedOffset = (int) (getResources().getDisplayMetrics().heightPixels * 0.35f);
         behavior.setExpandedOffset(expandedOffset);
         adapter = new CommentRecyclerAdapter();
-         if(video!=null){
-             Log.d("ljxtylyh","notnull");
-             if (video.getCommits() != null) {
-                 adapter.setLists(video.getCommits());
-             } else {
-                 adapter.setLists(new LinkedList<>());
-             }
-         } else {
-             adapter.setLists(new LinkedList<>());
-         }
+        if (video != null) {
+            Log.d("ljxtylyh", "notnull");
+            if (video.getCommits() != null) {
+                adapter.setLists(video.getCommits());
+            } else {
+                adapter.setLists(new LinkedList<>());
+            }
+        } else {
+            adapter.setLists(new LinkedList<>());
+        }
 
+        // 评论列表初始化：线性布局与适配器绑定
         androidx.recyclerview.widget.LinearLayoutManager lm = new androidx.recyclerview.widget.LinearLayoutManager(getContext());
         lm.setOrientation(androidx.recyclerview.widget.LinearLayoutManager.VERTICAL);
         binding.rvComments.setLayoutManager(lm);
         binding.rvComments.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        // 展开评论面板
         binding.ivPinglunInter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,30 +190,31 @@ public class InterVp2Fragment extends Fragment {
         });
 
 
+        // 点赞/取消点赞
         binding.ivLikeInter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(video.isLike()){
-                    viewModel.updataLikeState(position,false);
-                }
-                else{
-                    viewModel.updataLikeState(position,true);
+                if (video.isLike()) {
+                    viewModel.updataLikeState(position, false);
+                } else {
+                    viewModel.updataLikeState(position, true);
                 }
             }
         });
 
+        // 收藏/取消收藏
         binding.ivStarInter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(video.isStar()){
-                    viewModel.updateStarState(false,position);
-                }
-                else{
-                    viewModel.updateStarState(true,position);
+                if (video.isStar()) {
+                    viewModel.updateStarState(false, position);
+                } else {
+                    viewModel.updateStarState(true, position);
                 }
             }
         });
 
+        // 面板状态回调：展开禁用滑动与刷新，隐藏恢复
         behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int newState) {
@@ -216,44 +223,62 @@ public class InterVp2Fragment extends Fragment {
 //                    animateBottom(true);
                     viewModel.getVp2().setValue(true);
                     viewModel.getIfRefesh().setValue(true);
-                }
-                else if(newState == BottomSheetBehavior.STATE_EXPANDED || newState ==
-                        BottomSheetBehavior.STATE_DRAGGING ||newState ==  BottomSheetBehavior.STATE_SETTLING){
-                       viewModel.getVp2().setValue(false);
+                } else if (newState == BottomSheetBehavior.STATE_EXPANDED || newState ==
+                        BottomSheetBehavior.STATE_DRAGGING || newState == BottomSheetBehavior.STATE_SETTLING) {
+                    viewModel.getVp2().setValue(false);
                     viewModel.getIfRefesh().setValue(false);
                 }
             }
+
             @Override
             public void onSlide(@NonNull View view, float slideOffset) {
-                if(slideOffset >0){
+                if (slideOffset > 0) {
                     viewModel.getVp2().setValue(false);
                 }
             }
         });
 
 
-        //当视频列表数据变化时，进行粗糙的刷新，后续使用局部刷新；
+        // 列表变化时同步当前视频与评论数据
         viewModel.getMutVideoList().observe(getViewLifecycleOwner(), new Observer<List<Video>>() {
             @Override
             public void onChanged(List<Video> list) {
-                if(list!=null &&!list.isEmpty()){
-                    Log.d("lyhlyh",list.size()+"");
-                    video =  list.get(position);
+                if (list != null && !list.isEmpty()) {
+                    Log.d("lyhlyh", list.size() + "");
+                    video = list.get(position);
                     List<Comments> cs = video.getCommits();
+                    if (cs.get(position).getCommentTime().contains(" ")) {
+                        cs.get(position).setCommentTime(cs.get(position).getCommentTime().split(" ")[1]);
+                    }
+                    binding.rvComments.scrollToPosition(0);
+                    adapter.updataAdapter(cs);
                     adapter.setLists(new LinkedList<>(cs));
-                    adapter.notifyDataSetChanged();
-                    oldlist = list;
+//                    adapter.notifyDataSetChanged();
+//                    oldlist = list;
                     binding.setVideo(video);
                     binding.tvCommentTitle.setText((cs != null ? cs.size() : 0) + "条评论");
                 }
             }
         });
-         binding.etWaicommentInput.setEnabled(false);
+
+        //这个是因为rv的滑动，会和底部表单抢事件，所以这里需要处理，只要在最上面划不动时，才可以拖动底部表单
+        binding.rvComments.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                boolean canScroll = recyclerView.canScrollVertically(-1);
+                behavior.setDraggable(!canScroll);
+
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+        binding.etWaicommentInput.setEnabled(false);
         //键盘适应高度
         View view1 = binding.getRoot();
         View inputView = binding.consInput;
 
         //监听WindowInsets（包括状态栏，导航栏，键盘），当键盘高度发生变化会回调这个方法；
+        // 键盘高度适配输入栏
         ViewCompat.setOnApplyWindowInsetsListener(view1, new OnApplyWindowInsetsListener() {
             @NonNull
             @Override
@@ -270,30 +295,36 @@ public class InterVp2Fragment extends Fragment {
         });
 
 
-        //更新光标
+        //更新光标，文字可能有多行
         binding.etCommentInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                binding.etCommentInput.post(()->{
-                   binding.etCommentInput.setSelection(binding.etCommentInput.getText().length());
+                binding.etCommentInput.post(() -> {
+                    binding.etCommentInput.setSelection(binding.etCommentInput.getText().length());
                 });
             }
         });
 
+        // 发送评论：非空则走 ViewModel 更新并清空输入
         binding.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String mes = String.valueOf(binding.etCommentInput.getText());
-                if(!mes.isEmpty()){
-                    viewModel.updataCommentState(position,mes);
+                if (!mes.isEmpty()) {
+
+                    viewModel.updataCommentState(position, mes);
                     binding.etCommentInput.setText("");
-                }
-                else{
-                    Toast.makeText(getContext(),"表达你的态度再评论吧",Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getContext(), "表达你的态度再评论吧", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -318,10 +349,9 @@ public class InterVp2Fragment extends Fragment {
     }
 
 
-
     @Override
     public void onResume() {
-        if(player!=null){
+        if (player != null) {
             player.play();
         }
         binding.ivPause.setVisibility(View.GONE);
@@ -329,6 +359,7 @@ public class InterVp2Fragment extends Fragment {
         super.onResume();
     }
 
+    // 外部控制当前页播放器的播放/暂停状态
     public void setPlayerState(boolean playerState) {
         this.playerState = playerState;
         Log.d("swyxhljx", "position:" + position + "playstate" + playerState);
@@ -372,11 +403,11 @@ public class InterVp2Fragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        animator=null;
+        animator = null;
         binding.playerview.setPlayer(null);
         binding = null;
     }
-
+   //单击暂停，双击点赞
     private void setGesture() {
 
         if (gestureDetector == null) {
@@ -384,7 +415,7 @@ public class InterVp2Fragment extends Fragment {
                 @Override
                 public boolean onDoubleTap(@NonNull MotionEvent e) {
                     if (!video.isLike()) {
-                        Log.d("whywhywhy","yes");
+                        Log.d("whywhywhy", "yes");
                         viewModel.updataLikeState(position, true);
                         binding.setVideo(video);
                     }
@@ -441,7 +472,7 @@ public class InterVp2Fragment extends Fragment {
             binding.ivDoublelike.setVisibility(View.GONE);
         }
     };
-
+     //转盘动画
     public void startMusicBegin(View view) {
         if (animator == null) {
             animator = new ObjectAnimator().ofFloat(view, "rotation", 0f, 360f);
@@ -449,13 +480,14 @@ public class InterVp2Fragment extends Fragment {
             animator.setRepeatCount(ValueAnimator.INFINITE);
             animator.setInterpolator(new LinearInterpolator());
         }
-        if(!animator.isStarted()){
+        if (!animator.isStarted()) {
             animator.start();
         }
 
     }
-    public void stopMusic(){
-        if(animator!=null){
+    //停止动画；
+    public void stopMusic() {
+        if (animator != null) {
             animator.cancel();
         }
     }

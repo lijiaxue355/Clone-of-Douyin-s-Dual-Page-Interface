@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ApiResponse {
+    //响应实体类
     @SerializedName("code")
     private int code;
     @SerializedName("message")

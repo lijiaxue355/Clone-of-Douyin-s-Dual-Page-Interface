@@ -2,7 +2,8 @@ package com.example.douyin.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public  class Comments{
+//评论区实体类
+public class Comments {
     @SerializedName("commentId")
     private int commentId;
     @SerializedName("commentTitle")
@@ -16,7 +17,7 @@ public  class Comments{
     @SerializedName("commentIsLike")
     private boolean commentIsLike;
     @SerializedName("comentLike")
-    private String  comentLike;
+    private String comentLike;
     @SerializedName("commentLocation")
     private String commentLocation;
 

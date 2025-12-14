@@ -16,10 +16,11 @@ import com.example.douyin.databinding.OtherRecyFragmentBinding;
 
 public class OtherRecyFragment extends Fragment {
     OtherRecyFragmentBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.other_recy_fragment,container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.other_recy_fragment, container, false);
         return binding.getRoot();
     }
 

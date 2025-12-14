@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
-
+//vp2适配器
 public class HomeVp2Adapter extends FragmentStateAdapter {
     private List<Fragment> list = new LinkedList<>();
 

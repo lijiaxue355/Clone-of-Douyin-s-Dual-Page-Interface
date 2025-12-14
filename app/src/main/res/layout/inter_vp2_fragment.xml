@@ -1,279 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data
-        >
+
+    <data>
+
         <variable
             name="viewmodel"
             type="com.example.douyin.viewmodel.HomeViewModel" />
+
         <variable
             name="video"
             type="com.example.douyin.data.model.Video" />
 
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:transitionName='@{ "video_transition" + viewmodel.mutPosition}'
-            >
+            android:transitionName='@{ "video_transition" + viewmodel.mutPosition}'>
+
             <androidx.media3.ui.PlayerView
-                android:id ="@+id/playerview"
+                android:id="@+id/playerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="50dp"
                 android:background="@color/black"
-                app:use_controller="false"
-                >
+                app:use_controller="false">
 
             </androidx.media3.ui.PlayerView>
+
             <ImageView
-                android:id = "@+id/iv_pause"
+                android:id="@+id/iv_pause"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:src="@drawable/stopend"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src = "@drawable/stopend"
-                android:visibility="gone"
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
 
             </ImageView>
+
             <ImageView
-                android:id = "@+id/iv_doublelike"
+                android:id="@+id/iv_doublelike"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:src="@drawable/pinklike"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src = "@drawable/pinklike"
-                android:visibility="gone"
 
                 >
 
 
             </ImageView>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id = "@+id/cons_zpz_inter"
+                    android:id="@+id/cons_zpz_inter"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toTopOf="@+id/cons_bottom_player"
-                    >
+                    app:layout_constraintRight_toRightOf="parent">
+
                     <androidx.cardview.widget.CardView
-                        android:id = "@+id/cv_anthorimg_inter"
+                        android:id="@+id/cv_anthorimg_inter"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/iv_like_inter"
+                        android:layout_marginBottom="20dp"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="0dp"
-                        android:layout_marginBottom="20dp">
+                        app:layout_constraintBottom_toTopOf="@+id/iv_like_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
                         <ImageView
-                            android:id = "@+id/iv_anthorimg_inter"
+                            android:id="@+id/iv_anthorimg_inter"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:imageUrlWithRatio = "@{video.anthorImgUrl}"
-                            android:scaleType="fitXY">
+                            android:scaleType="fitXY"
+                            app:imageUrlWithRatio="@{video.anthorImgUrl}">
 
                         </ImageView>
                     </androidx.cardview.widget.CardView>
+
                     <ImageView
+                        android:id="@+id/iv_like_inter"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="5dp"
                         android:clickable="true"
                         android:focusable="true"
-                        android:id = "@+id/iv_like_inter"
-                        android:layout_marginBottom="5dp"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cv_anthorimg_inter"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_likecontent_inter"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
                         android:src="@{video.isLike ? @drawable/pinklike : @drawable/unlike}"
-                        android:scaleType="fitXY">
+                        app:layout_constraintBottom_toTopOf="@+id/tv_likecontent_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cv_anthorimg_inter">
 
                     </ImageView>
+
                     <TextView
-                        android:id = "@+id/tv_likecontent_inter"
+                        android:id="@+id/tv_likecontent_inter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_like_inter"
                         android:layout_marginBottom="15dp"
-                        app:layout_constraintBottom_toTopOf="@+id/iv_pinglun_inter"
                         android:text="@{video.like}"
+                        android:textColor="#ffffff"
                         android:textSize="12dp"
                         android:textStyle="bold"
-                        android:textColor="#ffffff"
-                        >
+                        app:layout_constraintBottom_toTopOf="@+id/iv_pinglun_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_like_inter">
 
                     </TextView>
+
                     <ImageView
 
-                        android:layout_marginBottom="5dp"
-                        android:id = "@+id/iv_pinglun_inter"
+                        android:id="@+id/iv_pinglun_inter"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_likecontent_inter"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_pinglun_inter"
-                        android:src="@drawable/pinglun1"
+                        android:layout_marginBottom="5dp"
                         android:scaleType="fitXY"
-                        >
+                        android:src="@drawable/pinglun1"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_pinglun_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_likecontent_inter">
 
                     </ImageView>
+
                     <TextView
-                        android:id = "@+id/tv_pinglun_inter"
+                        android:id="@+id/tv_pinglun_inter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_pinglun_inter"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/iv_star_inter"
                         android:layout_marginBottom="15dp"
                         android:text="@{video.comment}"
+                        android:textColor="#ffffff"
                         android:textSize="12dp"
                         android:textStyle="bold"
-                        android:textColor="#ffffff"
-                        >
+                        app:layout_constraintBottom_toTopOf="@+id/iv_star_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_pinglun_inter">
 
                     </TextView>
+
                     <ImageView
-                        android:id = "@+id/iv_star_inter"
-                        android:layout_marginBottom="5dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_pinglun_inter"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_star_inter"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:id="@+id/iv_star_inter"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:layout_marginBottom="5dp"
                         android:clickable="true"
                         android:focusable="true"
+                        android:scaleType="fitXY"
                         android:src="@{video.isStar ? @drawable/yishoucang : @drawable/shoucang3 }"
-                        android:scaleType="fitXY"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_star_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_pinglun_inter"
 
                         >
 
                     </ImageView>
+
                     <TextView
-                        android:id = "@+id/tv_star_inter"
+                        android:id="@+id/tv_star_inter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_star_inter"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/iv_toOther_inter"
                         android:layout_marginBottom="15dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
                         android:text="@{video.stars}"
+                        android:textColor="#ffffff"
                         android:textSize="12dp"
                         android:textStyle="bold"
-                        android:textColor="#ffffff"
+                        app:layout_constraintBottom_toTopOf="@+id/iv_toOther_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_star_inter"
 
                         >
 
                     </TextView>
 
                     <ImageView
-                        android:id = "@+id/iv_toOther_inter"
-                        android:layout_marginBottom="5dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_star_inter"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_toOther_inter"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:id="@+id/iv_toOther_inter"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/zhuanfa"
+                        android:layout_marginBottom="5dp"
                         android:scaleType="fitXY"
+                        android:src="@drawable/zhuanfa"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_toOther_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_star_inter"
 
                         >
 
                     </ImageView>
+
                     <TextView
-                        android:id = "@+id/tv_toOther_inter"
+                        android:id="@+id/tv_toOther_inter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_toOther_inter"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/iv_music_inter"
                         android:layout_marginBottom="15dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
                         android:text="@{video.toOthor}"
+                        android:textColor="#ffffff"
                         android:textSize="12dp"
                         android:textStyle="bold"
-                        android:textColor="#ffffff"
+                        app:layout_constraintBottom_toTopOf="@+id/iv_music_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_toOther_inter"
 
                         >
 
                     </TextView>
+
                     <ImageView
-                        android:id = "@+id/iv_music_inter"
-                        android:layout_marginBottom="10dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_toOther_inter"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:id="@+id/iv_music_inter"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/zp"
+                        android:layout_marginBottom="10dp"
                         android:scaleType="fitXY"
+                        android:src="@drawable/zp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_toOther_inter"
 
                         >
 
                     </ImageView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id = "@+id/cons_text"
+                    android:id="@+id/cons_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="80dp"
                     app:layout_constraintBottom_toTopOf="@+id/cons_bottom_player"
-                    >
+                    app:layout_constraintLeft_toLeftOf="parent">
+
                     <TextView
-                        android:id = "@+id/tv_anthorname_inter"
+                        android:id="@+id/tv_anthorname_inter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginBottom="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_anthorcontent_inter"
                         android:text="@{video.anthorName}"
+                        android:textColor="#ffffff"
                         android:textSize="16dp"
                         android:textStyle="bold"
-                        android:textColor="#ffffff"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_anthorcontent_inter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
 
                         >
 
                     </TextView>
+
                     <TextView
-                        android:id = "@+id/tv_anthorcontent_inter"
+                        android:id="@+id/tv_anthorcontent_inter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_anthorname_inter"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginBottom="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:text="@{video.videoContent}"
-                        android:textSize="14dp"
                         android:maxLines="2"
+                        android:text="@{video.videoContent}"
                         android:textColor="#ffffff"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_anthorname_inter"
 
                         >
 
@@ -281,79 +292,79 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:background="#000000"
-                    android:id = "@+id/cons_bottom_player"
+                    android:id="@+id/cons_bottom_player"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    android:background="#000000"
                     app:layout_constraintBottom_toBottomOf="parent">
+
                     <androidx.constraintlayout.widget.ConstraintLayout
 
                         android:layout_width="0dp"
                         android:layout_height="56dp"
                         android:background="#181817"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        >
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cv_waicomment_input"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/cv_waisend"
-                            app:cardElevation="0dp"
-                            app:cardCornerRadius="15dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             app:cardBackgroundColor="#3B3B3B"
-                            >
+                            app:cardCornerRadius="15dp"
+                            app:cardElevation="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/cv_waisend"
+                            app:layout_constraintTop_toTopOf="parent">
+
                             <EditText
                                 android:id="@+id/et_waicomment_input"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:minHeight="30dp"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@android:color/transparent"
                                 android:hint="期待你的评论"
+                                android:inputType="textMultiLine"
+                                android:maxLines="5"
+                                android:minHeight="30dp"
+                                android:overScrollMode="always"
+                                android:scrollbars="vertical"
                                 android:textColor="#000000"
                                 android:textColorHint="#999999"
-                                android:textSize="13sp"
-                                android:maxLines="5"
-                                android:background="@android:color/transparent"
-                                android:scrollbars="vertical"
-                                android:overScrollMode="always"
-                                android:inputType="textMultiLine"
-                                android:layout_marginStart="12dp"
-                                android:layout_marginEnd="8dp" />
+                                android:textSize="13sp" />
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cv_waisend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:cardElevation="0dp"
-                            app:cardCornerRadius="12dp"
-                              app:cardBackgroundColor="@android:color/transparent"
                             android:layout_marginRight="10dp"
-                            >
+                            app:cardBackgroundColor="@android:color/transparent"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
                             <TextView
-                                android:clickable="true"
-                                android:focusable="true"
                                 android:id="@+id/btn_waisend"
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:gravity="center"
-                                android:text="发送"
-                                android:padding="6dp"
                                 android:layout_margin="10dp"
+                                android:background="@drawable/sent"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:padding="6dp"
+                                android:text="发送"
+                                android:textColor="#ffffff"
                                 android:textSize="11sp"
                                 android:textStyle="bold"
-                                android:textColor="#ffffff"
-                                android:background="@drawable/sent"
 
                                 />
                         </androidx.cardview.widget.CardView>
@@ -366,46 +377,48 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:fitsSystemWindows="true"
             android:id="@+id/cons_comment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
-            android:nestedScrollingEnabled="false"
             android:background="#FFFFFF"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            >
+            android:fitsSystemWindows="true"
+            android:nestedScrollingEnabled="false"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
             <androidx.constraintlayout.widget.Guideline
-                android:id = "@+id/guideline_comment"
+                android:id="@+id/guideline_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintGuide_percent="0.65"
                 android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.65"
 
                 >
 
             </androidx.constraintlayout.widget.Guideline>
+
             <androidx.constraintlayout.widget.ConstraintLayout
 
+                android:id="@+id/cons_top_comments"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:id = "@+id/cons_top_comments"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/rv_comments">
+                app:layout_constraintBottom_toTopOf="@+id/rv_comments"
+                app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:id="@+id/tv_comment_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="23条评论"
+                    android:textColor="#111111"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    android:textColor="#111111"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -413,79 +426,79 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/cons_top_comments"
+                app:layout_constraintBottom_toTopOf="@id/cons_input"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/cons_input" />
+                app:layout_constraintTop_toBottomOf="@id/cons_top_comments" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cons_input"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
                 android:background="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@+id/rv_comments"
+                app:layout_constraintBottom_toBottomOf="@id/guideline_comment"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/guideline_comment">
+                app:layout_constraintTop_toBottomOf="@+id/rv_comments">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_comment_input"
                     android:layout_width="0dp"
                     android:layout_height="35dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/cv_send"
-                    app:cardElevation="0dp"
-                    app:cardCornerRadius="15dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     app:cardBackgroundColor="#F3F3F4"
-                    >
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/cv_send"
+                    app:layout_constraintTop_toTopOf="parent">
+
                     <EditText
                         android:id="@+id/et_comment_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="30dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@android:color/transparent"
                         android:hint="期待你的评论"
+                        android:inputType="textMultiLine"
+                        android:maxLines="5"
+                        android:minHeight="30dp"
+                        android:overScrollMode="always"
+                        android:scrollbars="vertical"
                         android:textColor="#000000"
                         android:textColorHint="#999999"
-                        android:textSize="13sp"
-                        android:maxLines="5"
-                        android:background="@android:color/transparent"
-                        android:scrollbars="vertical"
-                        android:overScrollMode="always"
-                        android:inputType="textMultiLine"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="8dp" />
+                        android:textSize="13sp" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_send"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:cardElevation="0dp"
-                    app:cardCornerRadius="12dp"
-
                     android:layout_marginRight="10dp"
-                   >
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+
+                    app:layout_constraintTop_toTopOf="parent">
+
                     <TextView
-                        android:clickable="true"
-                        android:focusable="true"
                         android:id="@+id/btn_send"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:gravity="center"
-                        android:text="发送"
-                        android:padding="6dp"
                         android:layout_margin="10dp"
+                        android:background="@drawable/sent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:padding="6dp"
+                        android:text="发送"
+                        android:textColor="@color/uncheckedbgv"
                         android:textSize="11sp"
                         android:textStyle="bold"
-                        android:textColor="@color/uncheckedbgv"
-                        android:background="@drawable/sent"
 
                         />
                 </androidx.cardview.widget.CardView>

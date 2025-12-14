@@ -7,6 +7,9 @@ import com.example.douyin.data.model.Comments;
 import java.util.LinkedList;
 import java.util.List;
 
+// //定义两个评论不同的差异
+// - areItemsTheSame：以 commentId 判断是否同一评论
+// - areContentsTheSame：比较评论文本/时间/昵称/位置/点赞/是否点赞
 public class SUpdataCommentDiffCallBack extends DiffUtil.Callback {
     List<Comments> oldList = new LinkedList<>();
     List<Comments> newList;
@@ -25,6 +28,7 @@ public class SUpdataCommentDiffCallBack extends DiffUtil.Callback {
     public int getNewListSize() {
         return newList == null ? 0 : newList.size();
     }
+
     //我的思路是  如果外部的视频变化了，直接更新整个列表， 如果外部的视频没有变化， 那么评论区直接去比较局部，所以这里直接返回true了；
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
@@ -35,10 +39,10 @@ public class SUpdataCommentDiffCallBack extends DiffUtil.Callback {
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         return oldList.get(oldItemPosition).getComment().equals(newList.get(newItemPosition).getComment())
                 && oldList.get(oldItemPosition).getCommentTime().equals(newList.get(newItemPosition).getCommentTime())
-                && oldList.get(oldItemPosition).getCommentName() .equals(newList.get(newItemPosition).getCommentName())
-                && oldList.get(oldItemPosition).getCommentLocation() .equals(newList.get(newItemPosition).getCommentLocation())
-                && oldList.get(oldItemPosition).getComentLike() .equals(newList.get(newItemPosition).getComentLike())
-                && oldList.get(oldItemPosition).isCommentIsLike()==newList.get(newItemPosition).isCommentIsLike()
+                && oldList.get(oldItemPosition).getCommentName().equals(newList.get(newItemPosition).getCommentName())
+                && oldList.get(oldItemPosition).getCommentLocation().equals(newList.get(newItemPosition).getCommentLocation())
+                && oldList.get(oldItemPosition).getComentLike().equals(newList.get(newItemPosition).getComentLike())
+                && oldList.get(oldItemPosition).isCommentIsLike() == newList.get(newItemPosition).isCommentIsLike()
                 ;
     }
 }

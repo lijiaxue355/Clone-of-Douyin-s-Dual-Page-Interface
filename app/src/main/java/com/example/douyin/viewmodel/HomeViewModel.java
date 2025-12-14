@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Random;
 
 
+//   统一管内，外流页面的状态与交互更新；
+
 public class HomeViewModel extends ViewModel {
     public static final String TAG = "ljxxhswy";
     MutableLiveData<List<Video>> mutVideoList = new MutableLiveData<>();
@@ -43,82 +45,96 @@ public class HomeViewModel extends ViewModel {
         this.repository = new Repository();
     }
 
+    // 获取视频列表
     public MutableLiveData<List<Video>> getMutVideoList(){
         if(mutVideoList == null) {
             mutVideoList = new MutableLiveData<>();
         }
         return mutVideoList;
     }
+    //因为底部表单和vp2的下滑有滑动冲突：
+    // 在底部出现时，通过共享的viewModel来传递数据，通知Vp2所在的碎片类vp2的状态
+    //最后改变vp2的可滑动状态
+    //这里获得vp2状态的Livedata实例；
     public MutableLiveData<Boolean> getVp2(){
         if(vp2 == null) {
             vp2 = new MutableLiveData<>();
         }
         return vp2;
     }
+    //是否在刷新；
     public MutableLiveData<Boolean> getIfRefesh(){
         if(ifRefesh == null) {
             ifRefesh = new MutableLiveData<>();
         }
         return ifRefesh;
     }
+    //现在的位置，记录当前内部页面的位置
     public MutableLiveData<Integer> getMutPosition(){
         if(position == null) {
             position = new MutableLiveData<>();
         }
         return position;
     }
-
+    //是否在加载；
     public MutableLiveData<Boolean> getIfProgress(){
         if(ifProgress == null){
             ifProgress = new MutableLiveData<>();
         }
         return ifProgress;
     }
-    public MutableLiveData<ExoPlayer> getMutPlayer(){
-        if(player == null) {
-            player = new MutableLiveData<>();
-        }
-        return player;
-    }
+    //原来的计划：只使用一个exoplayer实例，现在已经改，故注释掉：
+//    public MutableLiveData<ExoPlayer> getMutPlayer(){
+//        if(player == null) {
+//            player = new MutableLiveData<>();
+//        }
+//        return player;
+//    }
+    //因为到内流，你的BottomNagavitionView不可见，这里实现对其的控制；
     public MutableLiveData<Boolean> getIsBNVVisable(){
         if(isBNVVisable == null) {
             isBNVVisable = new MutableLiveData<>();
         }
         return isBNVVisable;
     }
-    //第一次加载数据时
+    // 第一次加载数据：从仓库异步拉取并返回 LiveData
     public void firstVideoList(){
 //        List<Video> list =  repository.getMutVideoList().getValue();
 //        mutVideoList.setValue(list);
         mutVideoList = repository.getMutVideoList();
     }
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        if(player.getValue()!=null){
-            player.getValue().release();
-        }
-    }
-    public String addLikeCount(int position){
-
-        if(mutVideoList.getValue()!=null && !mutVideoList.getValue().isEmpty()
-                && position>=0 && position<mutVideoList.getValue().size()){
-            String oldlike = mutVideoList.getValue().get(position).getLike();
-            String newLike = Utils.addLikes(oldlike);
-            return newLike;
-        }
-        return "";
-    }
-    public String subLikeCount(int position){
-        if(mutVideoList.getValue()!=null && !mutVideoList.getValue().isEmpty()
-                && position>=0 && position<mutVideoList.getValue().size()){
-            String oldlike = mutVideoList.getValue().get(position).getLike();
-            String newLike = Utils.jianLikes(oldlike);
-            return newLike;
-        }
-
-        return "";
-    }
+    //之前写的方案：
+//    @Override
+//    protected void onCleared() {
+//        super.onCleared();
+//        if(player.getValue()!=null){
+//            player.getValue().release();
+//        }
+//    }
+    // 计算点赞后的展示数值（不直接落库，只返回新值）
+    // 最后决定通过state更新
+//    public String addLikeCount(int position){
+//
+//        if(mutVideoList.getValue()!=null && !mutVideoList.getValue().isEmpty()
+//                && position>=0 && position<mutVideoList.getValue().size()){
+//            String oldlike = mutVideoList.getValue().get(position).getLike();
+//            String newLike = Utils.addLikes(oldlike);
+//            return newLike;
+//        }
+//        return "";
+//    }
+//    // 计算取消点赞后的展示数值（不直接落库，只返回新值）
+//    public String subLikeCount(int position){
+//        if(mutVideoList.getValue()!=null && !mutVideoList.getValue().isEmpty()
+//                && position>=0 && position<mutVideoList.getValue().size()){
+//            String oldlike = mutVideoList.getValue().get(position).getLike();
+//            String newLike = Utils.jianLikes(oldlike);
+//            return newLike;
+//        }
+//
+//        return "";
+//    }
+    // 更新点赞状态与数值：复制视频对象与列表，替换对应位置后 setValue
     public void  updataLikeState(int position,Boolean newState){
         List<Video> old = mutVideoList.getValue();
         if(old!=null && !old.isEmpty() && position>=0 && position<old.size()){
@@ -133,26 +149,30 @@ public class HomeViewModel extends ViewModel {
             mutVideoList.setValue(newList);
         }
     }
-    public String addStartCount(int position){
-        if(mutVideoList.getValue()!=null && !mutVideoList.getValue().isEmpty()
-                && position>=0 && position<mutVideoList.getValue().size()){
-            String oldlike = mutVideoList.getValue().get(position).getStars();
-            String newLike = Utils.addLikes(oldlike);
-            return newLike;
-        }
+    // 计算收藏后的展示数值（不直接落库，只返回新值）
+    //已废弃
+//    public String addStartCount(int position){
+//        if(mutVideoList.getValue()!=null && !mutVideoList.getValue().isEmpty()
+//                && position>=0 && position<mutVideoList.getValue().size()){
+//            String oldlike = mutVideoList.getValue().get(position).getStars();
+//            String newLike = Utils.addLikes(oldlike);
+//            return newLike;
+//        }
+//
+//        return "";
+//    }
+//    // 计算取消收藏后的展示数值（不直接落库，只返回新值）
+//    public String subStartCount(int position){
+//       if(mutVideoList.getValue()!=null && !mutVideoList.getValue().isEmpty()
+//               && position>=0 && position<mutVideoList.getValue().size()){
+//            String oldlike = mutVideoList.getValue().get(position).getStars();
+//            String newLike = Utils.jianLikes(oldlike);
+//            return newLike;
+//        }
+//        return "";
+//    }
 
-        return "";
-    }
-    public String subStartCount(int position){
-       if(mutVideoList.getValue()!=null && !mutVideoList.getValue().isEmpty()
-               && position>=0 && position<mutVideoList.getValue().size()){
-            String oldlike = mutVideoList.getValue().get(position).getStars();
-            String newLike = Utils.jianLikes(oldlike);
-            return newLike;
-        }
-        return "";
-    }
-
+    // 更新收藏状态与数值：复制视频对象与列表后提交新列表
     public void updateStarState(Boolean like,int position){
         List<Video> old = mutVideoList.getValue();
         if(old!=null && !old.isEmpty() && position>=0 && position<old.size()){
@@ -162,11 +182,12 @@ public class HomeViewModel extends ViewModel {
             Video v = copyVideo(src);
             v.setStar(like);
             v.setStars(newStars);
-            java.util.ArrayList<Video> newList = new java.util.ArrayList<>(old);
+            List<Video> newList = new LinkedList<>(old);
             newList.set(position, v);
             mutVideoList.setValue(newList);
         }
     }
+    // 新增评论：复制评论列表，在首位插入后提交新列表
     public void  updataCommentState(int position,String mes){
         List<Video> old = mutVideoList.getValue();
         if(old!=null && !old.isEmpty() && position>=0 && position<old.size()){
@@ -175,10 +196,16 @@ public class HomeViewModel extends ViewModel {
             Comments comments = new Comments("0",mes, id,false,
                     "西安","ljx"," 刚刚", "http://t6y43599b.hb-bkt.clouddn.com/title/gittitle.jpg");
             Video v = copyVideo(src);
-            java.util.LinkedList<Comments> newComments = new java.util.LinkedList<>(src.getCommits()==null?new java.util.LinkedList<Comments>():src.getCommits());
+            List<Comments> newComments;
+            if(src.getCommits() == null){
+                newComments = new LinkedList<>(new LinkedList<>());
+            }
+            else{
+                newComments = new LinkedList<>(src.getCommits());
+            }
             newComments.add(0,comments);
             v.setCommits(newComments);
-            java.util.ArrayList<Video> newList = new java.util.ArrayList<>(old);
+            List<Video> newList = new LinkedList<>(old);
             newList.set(position, v);
             mutVideoList.setValue(newList);
         }
@@ -207,6 +234,7 @@ public class HomeViewModel extends ViewModel {
     }
     //记得传applocationcontext，否则万一内存泄漏
     @UnstableApi
+    // 初始化并复用 ExoPlayer 的 SimpleCache（设置缓存目录与逐出策略）
     public static SimpleCache getSimpleCheched(Context context){
         if(simpleCache == null){
             File file = new File(context.getCacheDir(),"video_cache");

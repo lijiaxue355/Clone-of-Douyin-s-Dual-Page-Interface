@@ -30,25 +30,29 @@ public class MainActivity extends AppCompatActivity {
     InterFragment interFragment;
     HomeViewModel homeViewModel;
     Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        //修改状态栏的颜色
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.WHITE);
+        //初始化页面，使得进去的页面就是推荐页；
         activity = this;
-        if(homeFragment==null){
+        if (homeFragment == null) {
             homeFragment = new HomeFragment();
         }
         getSupportFragmentManager().beginTransaction().addToBackStack(null).
-                replace(R.id.frame_ma,homeFragment).show(homeFragment).commit();
+                replace(R.id.frame_ma, homeFragment).show(homeFragment).commit();
+        //初始化底部导航栏的监听，实现底部tab的跳转；
         initBottomNavagationView();
     }
 
@@ -57,14 +61,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                if(menuItem.getItemId()==R.id.tv_firpage_menu){
-                    if(homeFragment==null){
+                if (menuItem.getItemId() == R.id.tv_firpage_menu) {
+                    if (homeFragment == null) {
                         homeFragment = new HomeFragment();
                     }
                     getSupportFragmentManager().beginTransaction().addToBackStack(null).
-                            replace(R.id.frame_ma,homeFragment).show(homeFragment).commit();
-                }
-                else{
+                            replace(R.id.frame_ma, homeFragment).show(homeFragment).commit();
+                } else {
 
                 }
 

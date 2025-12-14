@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+//视频实体类
 public class Video {
 
     @SerializedName("id")
@@ -48,12 +49,11 @@ public class Video {
     private List<Comments> commits;
 
 
-
-
     private Runnable runnable;
     private int chchedHeight = -1;
-    private  int titleHeight = -1;
+    private int titleHeight = -1;
     private float aspectRatio = 0f;
+
     public boolean isStar() {
         return isStar;
     }
@@ -62,13 +62,13 @@ public class Video {
         isStar = star;
     }
 
-    public Video(String anthorImgUrl, String anthorName, float aspectRatio,  String comment, List<Comments> commits, int id, boolean isLike, boolean isStar, String like, String musicImg, String stars, int titleHeight, String toOthor, String videoContent, String videoFirstImgUrl, String videoUrl) {
+    public Video(String anthorImgUrl, String anthorName, float aspectRatio, String comment, List<Comments> commits, int id, boolean isLike, boolean isStar, String like, String musicImg, String stars, int titleHeight, String toOthor, String videoContent, String videoFirstImgUrl, String videoUrl) {
         this.anthorImgUrl = anthorImgUrl;
         this.anthorName = anthorName;
         this.aspectRatio = aspectRatio;
 
         this.comment = comment;
-        this.commits =commits;
+        this.commits = commits;
         this.id = id;
         this.isLike = isLike;
         this.isStar = isStar;
@@ -146,9 +146,11 @@ public class Video {
     public boolean isLike() {
         return isLike;
     }
-    public void setIsLike(boolean isLike){
+
+    public void setIsLike(boolean isLike) {
         this.isLike = isLike;
     }
+
     public void setLike(boolean like) {
         isLike = like;
     }

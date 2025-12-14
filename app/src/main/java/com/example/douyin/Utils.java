@@ -3,40 +3,37 @@ package com.example.douyin;
 import android.util.Log;
 
 import java.math.BigDecimal;
-
+//工具类，这里主要实现加减点赞数量
 public class Utils {
-
+    //加点赞数量：
+    //这里我服务端的返回值是都是以万结尾的
+    //为了方便展示UI数字的变化
+    //点赞直接+0.1万
     public static String addLikes(String oldlikes) {
-        if(oldlikes.contains("万")){
+        if (oldlikes.contains("万")) {
 
-            String oldNLike = oldlikes.substring(0,oldlikes.length() - 1).trim();
+            String oldNLike = oldlikes.substring(0, oldlikes.length() - 1).trim();
             BigDecimal bigDecimal = new BigDecimal(oldNLike);
             BigDecimal add = bigDecimal.add(new BigDecimal("0.1"));
-            return add.toString()+ "万";
+            return add.toString() + "万";
 
-        }
-        else{
-            return String.valueOf(Integer.parseInt(oldlikes)+1);
+        } else {
+            return String.valueOf(Integer.parseInt(oldlikes) + 1);
         }
     }
-
+   //取消点赞直接减0.1万
     public static String jianLikes(String oldlikes) {
-        if(oldlikes.contains("万")){
+        if (oldlikes.contains("万")) {
 
-            String oldNLike = oldlikes.substring(0,oldlikes.length() - 1).trim();
+            String oldNLike = oldlikes.substring(0, oldlikes.length() - 1).trim();
             BigDecimal bigDecimal = new BigDecimal(oldNLike);
             BigDecimal add = bigDecimal.subtract(new BigDecimal("0.1"));
-            return add.toString()+ "万";
+            return add.toString() + "万";
 
-        }
-        else{
-            return String.valueOf(Integer.parseInt(oldlikes)-1);
+        } else {
+            return String.valueOf(Integer.parseInt(oldlikes) - 1);
         }
     }
-
-
-
-
 
 
 //    private static int parseCount(String v) {

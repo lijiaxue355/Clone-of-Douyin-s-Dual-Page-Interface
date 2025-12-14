@@ -18,9 +18,9 @@ import com.example.douyin.view.fragment.RecyFragment;
 
 import java.util.LinkedList;
 import java.util.List;
-
+ //评论区的适配器
 public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecyclerAdapter.MyViewHolder> {
-    public void  setLists(List<Comments> list) {
+    public void setLists(List<Comments> list) {
         this.list = list;
     }
 
@@ -30,16 +30,13 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding  = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.comments_recy,parent,false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.comments_recy, parent, false);
         return new MyViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Log.d("swyljxswy","time"+list.size());
-      if(list.get(position).getCommentTime().contains(" ")){
-          list.get(position).setCommentTime(list.get(position).getCommentTime().split(" ")[1]);
-      }
+
         holder.binding.setComments(list.get(position));
     }
 
@@ -48,17 +45,19 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
         return list != null ? list.size() : 0;
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
-        CommentsRecyBinding  binding;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        CommentsRecyBinding binding;
+
         public MyViewHolder(CommentsRecyBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
     }
-    public void  updataAdapter(List<Comments> list){
 
-        SUpdataCommentDiffCallBack sUpdataCommentDiffCallBack = new SUpdataCommentDiffCallBack(this.list,list);
+    public void updataAdapter(List<Comments> list) {
+
+        SUpdataCommentDiffCallBack sUpdataCommentDiffCallBack = new SUpdataCommentDiffCallBack(list, this.list);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(sUpdataCommentDiffCallBack);
         this.list = list;
         diffResult.dispatchUpdatesTo(this);

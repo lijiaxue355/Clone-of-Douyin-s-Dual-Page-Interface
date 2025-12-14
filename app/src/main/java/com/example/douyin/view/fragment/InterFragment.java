@@ -35,6 +35,9 @@ import com.example.douyin.viewmodel.HomeViewModel;
 import java.util.LinkedList;
 import java.util.List;
 
+// 说明：内流容器页面（垂直 ViewPager2）
+// - 只在列表结构变化时触发 DiffUtil 刷新，避免不必要的重建
+// - 负责页切换时的播放状态管理
 public class InterFragment extends Fragment {
     public static final String TAG = "ljxxhxaz";
     InterFragmentBinding binding;
@@ -44,43 +47,12 @@ public class InterFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-//        if(getArguments()!=null){
-//            Bundle bundle = getArguments();
-//            String name = bundle.getString("name");
-//            binding.consTopInter.setTransitionName(name);
-//        }
-//        TransitionSet transitionSet = new TransitionSet()
-//                .addTransition(new ChangeBounds())
-//                .addTransition(new ChangeTransform())
-//                .addTransition(new ChangeImageTransform())
-//                .setDuration(300);
-//        setSharedElementEnterTransition(transitionSet);
-//        setSharedElementReturnTransition(transitionSet);
-
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        if (getArguments() != null) {
-//            Bundle bundle = getArguments();
-//            String name = bundle.getString("name");
-//            View view = null;
-//            if (getActivity() != null) {
-//                view = getActivity().findViewById(R.id.cv_transitionname);
-//            }
-//            if (view != null) {
-//                view.setTransitionName(name);
-//            }
-//        }
-//        TransitionSet transitionSet = new TransitionSet()
-//                .addTransition(new ChangeBounds())
-//                .addTransition(new ChangeTransform())
-//                .addTransition(new ChangeImageTransform())
-//                .setDuration(300);
-//        setSharedElementEnterTransition(transitionSet);
-//        setSharedElementReturnTransition(transitionSet);
         Window window = getActivity().getWindow();
         window.setStatusBarColor(Color.parseColor("#000000"));
         binding = DataBindingUtil.inflate(inflater, R.layout.inter_fragment, container, false);
@@ -88,22 +60,24 @@ public class InterFragment extends Fragment {
         viewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         viewModel.getIsBNVVisable().setValue(false);
 
+        // 观察列表：结构不变则不刷新，结构变化才更新适配器
         viewModel.getMutVideoList().observe(getViewLifecycleOwner(), new Observer<List<Video>>() {
             @Override
-            public void onChanged(List<Video> videos ) {
+            public void onChanged(List<Video> videos) {
 
                 if (videos == null || videos.isEmpty()) {
                     binding.pb.setVisibility(View.VISIBLE);
                 } else {
-                   binding.interrefresh.setRefreshing(false);
+                    binding.interrefresh.setRefreshing(false);
                     binding.pb.setVisibility(View.GONE);
                     if (adapter == null) {
                         adapter = new InterVp2Adapter(getActivity(), videos);
                         binding.interFragment.setAdapter(adapter);
                     } else {
+                        // 仅当 id/长度变化时才触发适配器刷新
                         boolean same = isStructureSame(list, videos);
-                        if(!same){
-                            Log.d("whycantrefush","same");
+                        if (!same) {
+                            Log.d("whycantrefush", "same");
                             adapter.updataAdapter(videos);
                         }
                     }
@@ -122,20 +96,22 @@ public class InterFragment extends Fragment {
         });
 
 
+        // 下拉刷新：请求仓库重新拉取数据
         binding.interrefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-              viewModel.refreshVideoList();
+                viewModel.refreshVideoList();
             }
 
         });
-
+        //设置vp2的可滑动
         viewModel.getVp2().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 binding.interFragment.setUserInputEnabled(aBoolean);
             }
         });
+        //外部控制刷新；
         viewModel.getIfRefesh().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -143,6 +119,7 @@ public class InterFragment extends Fragment {
             }
         });
 
+        // 页切换时：暂停上一页，播放当前页
         binding.interFragment.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             private int prePosition = -1;
 
@@ -191,21 +168,21 @@ public class InterFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private boolean isStructureSame(List<Video> a, List<Video> b){
-        if(a== null || a.isEmpty()){
+    private boolean isStructureSame(List<Video> a, List<Video> b) {
+        if (a == null || a.isEmpty()) {
             return true;
         }
-        if(a.size()!=b.size()){
+        if (a.size() != b.size()) {
             return false;
         }
-        for(int i=0;i<a.size();i++){
-            if(a.get(i).getId()!=b.get(i).getId()) {
+        for (int i = 0; i < a.size(); i++) {
+            if (a.get(i).getId() != b.get(i).getId()) {
                 return false;
             }
         }
         return true;
     }
-
+    //页面销毁时，当视频暂停；
     @Override
     public void onDestroyView() {
         if (adapter != null) {

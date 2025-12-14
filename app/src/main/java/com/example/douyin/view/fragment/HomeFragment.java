@@ -22,61 +22,64 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     FirspageFragmentBinding binding;
     List<Fragment> fragmentList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.firspage_fragment,container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.firspage_fragment, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         fragmentList = new LinkedList<>();
+        //其他外流页
         for (int i = 0; i < 8; i++) {
             OtherRecyFragment otherRecyFragment = new OtherRecyFragment();
             fragmentList.add(otherRecyFragment);
         }
+        //外流页
         RecyFragment fragment = new RecyFragment();
         fragmentList.add(fragment);
-        HomeVp2Adapter adapter = new HomeVp2Adapter(getActivity(),fragmentList);
+        HomeVp2Adapter adapter = new HomeVp2Adapter(getActivity(), fragmentList);
         binding.vp2Fpf.setAdapter(adapter);
-
+       //联动tablayout 和 viewpage2
         new TabLayoutMediator(binding.tabShowfFpf, binding.vp2Fpf, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int i) {
-               switch (i){
-                   case 0:
-                       tab.setText("经验");
-                       break;
-                   case 1:
-                       tab.setText("热点");
-                       break;
-                   case 2:
-                       tab.setText("直播");
-                       break;
-                   case 3:
-                       tab.setText("团购");
-                       break;
-                   case 4:
-                       tab.setText("西安");
-                       break;
-                   case 5:
-                       tab.setText("精选");
-                       break;
-                   case 6:
-                       tab.setText("关注");
-                       break;
-                   case 7:
-                       tab.setText("商城");
-                       break;
-                   case 8:
-                       tab.setText("推荐");
-                       break;
-               }
+                switch (i) {
+                    case 0:
+                        tab.setText("经验");
+                        break;
+                    case 1:
+                        tab.setText("热点");
+                        break;
+                    case 2:
+                        tab.setText("直播");
+                        break;
+                    case 3:
+                        tab.setText("团购");
+                        break;
+                    case 4:
+                        tab.setText("西安");
+                        break;
+                    case 5:
+                        tab.setText("精选");
+                        break;
+                    case 6:
+                        tab.setText("关注");
+                        break;
+                    case 7:
+                        tab.setText("商城");
+                        break;
+                    case 8:
+                        tab.setText("推荐");
+                        break;
+                }
             }
         }).attach();
-        binding.vp2Fpf.setCurrentItem(adapter.getItemCount() - 1,false);
+        //放置推荐页
+        binding.vp2Fpf.setCurrentItem(adapter.getItemCount() - 1, false);
         super.onViewCreated(view, savedInstanceState);
     }
 

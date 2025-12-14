@@ -2,11 +2,13 @@ package com.example.douyin.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +32,7 @@ import com.example.douyin.viewmodel.HomeViewModel;
 import java.util.LinkedList;
 import java.util.List;
 
+// 说明：首页外流列表页面：负责展示首页瀑布流、绑定数据与跳转内流；
 public class RecyFragment extends Fragment {
     FirspageShowVp2Binding binding;
     HomeViewModel homeViewModel;
@@ -44,22 +47,24 @@ public class RecyFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.setViewmodel(homeViewModel);
         homeViewModel.getIfProgress().setValue(true);
+        // 首次拉取视频列表数据
         homeViewModel.firstVideoList();
         adapter = new HomeRecyclerAdapter();
+        // 观察视频列表 LiveData，使用 DiffUtil 进行最小刷新
         homeViewModel.getMutVideoList().observe(getViewLifecycleOwner(), new Observer<List<Video>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<Video> videos) {
                 if (videos != null && !videos.isEmpty()) {
                     binding.refresh.setRefreshing(false);
-                    Log.d("lyhlyhlyh",videos.get(0).isLike() + " ");
+                    Log.d("lyhlyhlyh", videos.get(0).isLike() + " ");
                     adapter.updataAdapter(videos);
                     adapter.setLists(videos, RecyFragment.this, binding.recyShowFirstpage);
-
                     homeViewModel.getIfProgress().setValue(false);
                 }
             }
         });
+        // 下拉刷新：触发仓库重新请求
         binding.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -79,6 +84,7 @@ public class RecyFragment extends Fragment {
 //            list.add(new Item("好看的帽子",R.drawable.newmaozi,"10万","爱帽者",R.drawable.title4));
 //        }
 
+        // 初始化瀑布流布局管理器与适配器绑定
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 //        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         binding.recyShowFirstpage.setLayoutManager(layoutManager);
@@ -95,25 +101,22 @@ public class RecyFragment extends Fragment {
         binding = null;
     }
 
+    // 点击首页卡片，跳转到内流 Fragment
     public void setHomeToInterFragment(View view, int position) {
         if (homeViewModel == null) {
             homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         }
         homeViewModel.getMutPosition().setValue(position);
 
-        if (view.getTransitionName().equals("video_transition")) {
-            view.setTransitionName(view.getTransitionName() + position);
-        }
-
         interFragment = new InterFragment();
-        Bundle args = new Bundle();
-        args.putString("name", view.getTransitionName());
-        interFragment.setArguments(args);
-
         getActivity().getSupportFragmentManager().beginTransaction()
-                .addSharedElement(view, view.getTransitionName())
-                //重新排序，优化操作；
-                .setReorderingAllowed(true)
                 .replace(R.id.main, interFragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onStart() {
+        Window window = getActivity().getWindow();
+        window.setStatusBarColor(Color.WHITE);
+        super.onStart();
     }
 }

@@ -35,15 +35,17 @@ import java.util.List;
 
 public class VideoBindingAdapter {
 
-
-    @BindingAdapter(value = {"imageResource","murl","list","position"},requireAll = false)
+    //加载外流封面图，
+    // 这里使用了Glide进行了内存缓存以及预加载；
+    // 并且在图片返回成功时记录了图片的宽高比 -> 下载加载图片时不会等图片回调重测 -> 减少了布局抖动;
+    @BindingAdapter(value = {"imageResource", "murl", "list", "position"}, requireAll = false)
     public static void loadImage(ImageView imageView, Video video, String urls, MutableLiveData<List<Video>> list, int position) {
         Glide.with(imageView.getContext()).clear(imageView);
         ViewGroup.LayoutParams lp = imageView.getLayoutParams();
-        if(lp instanceof ConstraintLayout.LayoutParams){
+        if (lp instanceof ConstraintLayout.LayoutParams) {
             ConstraintLayout.LayoutParams clp = (ConstraintLayout.LayoutParams) lp;
             float ratio = video.getAspectRatio();
-            if(ratio > 0f){
+            if (ratio > 0f) {
                 clp.height = 0;
                 clp.dimensionRatio = String.format("1:%.5f", ratio);
                 imageView.setLayoutParams(clp);
@@ -75,17 +77,17 @@ public class VideoBindingAdapter {
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         int iw = resource.getIntrinsicWidth();
                         int ih = resource.getIntrinsicHeight();
-                        if(iw > 0 && ih > 0){
+                        if (iw > 0 && ih > 0) {
                             float r = (float) ih / (float) iw;
                             video.setAspectRatio(r);
                             ViewGroup.LayoutParams lp2 = imageView.getLayoutParams();
-                            if(lp2 instanceof ConstraintLayout.LayoutParams){
+                            if (lp2 instanceof ConstraintLayout.LayoutParams) {
                                 ConstraintLayout.LayoutParams clp2 = (ConstraintLayout.LayoutParams) lp2;
                                 clp2.height = 0;
-                                clp2.dimensionRatio = String.format( "1:%.5f", r);
+                                clp2.dimensionRatio = String.format("1:%.5f", r);
                                 imageView.setLayoutParams(clp2);
                                 View parent = (View) imageView.getParent();
-                                if(parent!=null){
+                                if (parent != null) {
                                     parent.requestLayout();
                                 }
                             }
@@ -94,9 +96,9 @@ public class VideoBindingAdapter {
                     }
                 })
                 .into(imageView);
-        int futurePosition = position +3;
-        if(list!=null && list.getValue()!=null){
-            if(futurePosition < list.getValue().size()){
+        int futurePosition = position + 3;
+        if (list != null && list.getValue() != null) {
+            if (futurePosition < list.getValue().size()) {
                 for (int i = position + 1; i <= futurePosition; i++) {
                     Glide.with(imageView.getContext())
                             .load(list.getValue().get(i).getVideoFirstImgUrl())
@@ -106,13 +108,11 @@ public class VideoBindingAdapter {
                 }
             }
         }
-
     }
-
-
+    //加载普通图片；
 
     @BindingAdapter("imageUrlWithRatio")
-    public static void loadImageWithRatio(ImageView imageView, String url){
+    public static void loadImageWithRatio(ImageView imageView, String url) {
         Glide.with(imageView).clear(imageView);
         RequestOptions opts = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
@@ -143,7 +143,8 @@ public class VideoBindingAdapter {
 //
 //                    @Override
 //                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-////                        int iw = resource.getIntrinsicWidth();
+
+    /// /                        int iw = resource.getIntrinsicWidth();
 //                        int ih = resource.getIntrinsicHeight();
 //                        if( ih > 0){
 //                            ViewGroup.LayoutParams lp = imageView.getLayoutParams();
@@ -158,12 +159,12 @@ public class VideoBindingAdapter {
 //                })
 //                .into(imageView);
 //    }
+    // 说明：可见性绑定，根据布尔值控制 View 显示或隐藏
     @BindingAdapter("visibility")
-    public static void visibilityToGone(View view,Boolean vis){
-        if(vis){
+    public static void visibilityToGone(View view, Boolean vis) {
+        if (vis) {
             view.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             view.setVisibility(View.GONE);
         }
     }
